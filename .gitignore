@@ -11,3 +11,8 @@
 
 /packages
 !.nuget/nuget.exe
+
+/Help/bin
+/Help/obj
+/Plugin/bin
+/Plugin/obj
