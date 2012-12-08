@@ -1,0 +1,13 @@
+*.userprefs
+*.suo
+*.user
+*.pdb
+*.pidb
+*.exe
+*.pdb
+*.dll
+*.manifest
+.cache
+
+/packages
+!.nuget/nuget.exe
