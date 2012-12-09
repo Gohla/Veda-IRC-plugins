@@ -4,7 +4,6 @@ using System.Linq;
 using Gohla.Shared;
 using Veda.Command;
 using Veda.Plugin;
-using Veda.Plugin.Scan;
 
 namespace Veda.Plugins.Help
 {

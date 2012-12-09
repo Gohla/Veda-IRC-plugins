@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Veda.Plugin;
-using Veda.Plugin.Scan;
 
 namespace Veda.Plugins.Plugin
 {
