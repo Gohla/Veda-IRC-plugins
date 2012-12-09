@@ -41,17 +41,9 @@
       <Project>{6e1a3f05-4a08-41a0-bab7-a1b6f3315e2a}</Project>
       <Name>Gohla.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Veda\Command\Veda.Command.csproj">
-      <Project>{5c8bfb0b-a0cb-4b98-bc8e-e703d9e44f83}</Project>
-      <Name>Veda.Command</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Veda\Plugin\Veda.Plugin.csproj">
-      <Project>{8f44f23f-d615-473b-ac4a-fe6b01f0bc74}</Project>
-      <Name>Veda.Plugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Veda\Veda\Veda.csproj">
-      <Project>{70760d4b-99f0-4ba3-8e03-a3db96e9e268}</Project>
-      <Name>Veda</Name>
+    <ProjectReference Include="..\..\Veda\Interface\Veda.Interface.csproj">
+      <Project>{BFD3723B-68D5-4A3F-8223-58B9C6E72178}</Project>
+      <Name>Veda.Interface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

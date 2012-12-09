@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Veda.Plugin;
+using Veda.Interface;
 
 namespace Veda.Plugins.Plugin
 {
