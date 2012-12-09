@@ -1,52 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Gohla.Shared;
 using Veda.Command;
 using Veda.Plugin;
-using Gohla.Shared;
+using Veda.Plugin.Scan;
 
 namespace Veda.Plugins.Help
 {
-    public class HelpPlugin : IPlugin
+    [Plugin(Name = "Help", Description = "Provides help for plugins and commands.")]
+    public class HelpPlugin
     {
-        private List<ICommand> _commands = new List<ICommand>();
-
-        public String Name { get; set; }
-        public String Description { get; set; }
-        public IEnumerable<ICommand> Commands { get { return _commands; } }
-        public String Key { get { return Name; } }
-
-        public HelpPlugin()
-        {
-            Name = "Help";
-            Description = "Provides help for plugins and commands.";
-
-            _commands.Add(CommandBuilder.CreateCommand<Func<IContext, IPlugin, String>>
-            (
-                "help", 
-                "Shows help about a plugin.", 
-                (context, plugin) => Help(context, plugin))
-            );
-            _commands.Add(CommandBuilder.CreateCommand<Func<IContext, IPlugin, String, String>>
-            (
-                "help",
-                "Shows help about a command in a plugin.", 
-                (context, plugin, command) => Help(context, plugin, command))
-            );
-        }
-
-        public void Dispose()
-        {
-            
-        }
-
+        [Command(Name = "help", Description = "Shows help about a plugin.")]
         public String Help(IContext context, IPlugin plugin)
         {
             return plugin.Description;
         }
 
+        [Command(Name = "help", Description = "Shows help about command in a plugin.")]
         public String Help(IContext context, IPlugin plugin, String command)
         {
             IEnumerable<ICommand> candidates = plugin.Commands
@@ -54,7 +25,7 @@ namespace Veda.Plugins.Help
                 ;
 
             if(candidates.IsEmpty())
-                return "Command " + command + " not found in " + plugin.Name + ".";
+                throw new ArgumentException("Command " + command + " not found in " + plugin.Name + ".");
 
             return candidates
                 .Select(c => "(" + c.Name + " " + c.ParameterTypes.Skip(1).ToString(", ") + "): " + c.Description)
