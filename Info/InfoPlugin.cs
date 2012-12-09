@@ -10,11 +10,10 @@ namespace Veda.Plugins.Info
     public static class InfoPlugin
     {
         [Command(Description = "Shows information about a command.")]
-        public static String Help(IContext context, IEnumerable<ICommand> command)
+        public static IEnumerable<String> Help(IContext context, IEnumerable<ICommand> command)
         {
             return command
                 .Select(c => c.ToString() + ": " + c.Description)
-                .ToString(" | ")
                 ;
         }
 
@@ -25,7 +24,7 @@ namespace Veda.Plugins.Info
         }
 
         [Command(Description = "Shows information about a command in a plugin.")]
-        public static String Help(IContext context, IPlugin plugin, String command)
+        public static IEnumerable<String> Help(IContext context, IPlugin plugin, String command)
         {
             IEnumerable<ICommand> candidates = context.Bot.CommandManager.GetCommands(plugin.Name, command);
 
@@ -34,7 +33,6 @@ namespace Veda.Plugins.Info
 
             return candidates
                 .Select(c => c.ToString() + ": " + c.Description)
-                .ToString(" | ")
                 ;
         }
     }

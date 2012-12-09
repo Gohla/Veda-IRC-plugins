@@ -12,6 +12,8 @@
 /packages
 !.nuget/nuget.exe
 
+/Google/bin
+/Google/obj
 /Info/bin
 /Info/obj
 /Plugin/bin
