@@ -5,10 +5,10 @@ using Veda.Interface;
 namespace Veda.Plugins.Plugin
 {
     [Plugin(Name = "Plugin", Description = "Manages and retrieves information about plugins.")]
-    public class PluginPlugin
+    public static class PluginPlugin
     {
-        [Command(Name = "list", Description = "Lists all plugins.")]
-        public String List(IContext context)
+        [Command(Description = "Lists all plugins.")]
+        public static String List(IContext context)
         {
             return context.Bot.PluginManager.Plugins
                 .Select(p => p.Name)
@@ -16,8 +16,8 @@ namespace Veda.Plugins.Plugin
                 ;
         }
 
-        [Command(Name = "list", Description = "Lists all command in a plugin.")]
-        public String List(IContext context, IPlugin plugin)
+        [Command(Description = "Lists all command in a plugin.")]
+        public static String List(IContext context, IPlugin plugin)
         {
             return plugin.Commands
                 .Select(p => p.Name)

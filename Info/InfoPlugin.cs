@@ -7,10 +7,10 @@ using Veda.Interface;
 namespace Veda.Plugins.Info
 {
     [Plugin(Name = "Info", Description = "Provides information about plugins and commands.")]
-    public class InfoPlugin
+    public static class InfoPlugin
     {
-        [Command(Name = "help", Description = "Shows information about a command.")]
-        public String Help(IContext context, IEnumerable<ICommand> command)
+        [Command(Description = "Shows information about a command.")]
+        public static String Help(IContext context, IEnumerable<ICommand> command)
         {
             return command
                 .Select(c => c.ToString() + ": " + c.Description)
@@ -18,14 +18,14 @@ namespace Veda.Plugins.Info
                 ;
         }
 
-        [Command(Name = "help", Description = "Shows information about a plugin.")]
-        public String Help(IContext context, IPlugin plugin)
+        [Command(Description = "Shows information about a plugin.")]
+        public static String Help(IContext context, IPlugin plugin)
         {
             return plugin.Description;
         }
 
-        [Command(Name = "help", Description = "Shows information about a command in a plugin.")]
-        public String Help(IContext context, IPlugin plugin, String command)
+        [Command(Description = "Shows information about a command in a plugin.")]
+        public static String Help(IContext context, IPlugin plugin, String command)
         {
             IEnumerable<ICommand> candidates = context.Bot.CommandManager.GetCommands(plugin.Name, command);
 
