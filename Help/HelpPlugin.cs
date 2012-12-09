@@ -26,7 +26,7 @@ namespace Veda.Plugins.Help
                 throw new ArgumentException("Command " + command + " not found in " + plugin.Name + ".");
 
             return candidates
-                .Select(c => "(" + c.Name + " " + c.ParameterTypes.Skip(1).ToString(", ") + "): " + c.Description)
+                .Select(c => "(" + c.Name + " " + c.ParameterTypes.Skip(1).Select(t => t.Name).ToString(", ") + "): " + c.Description)
                 .ToString(" | ")
                 ;
         }
