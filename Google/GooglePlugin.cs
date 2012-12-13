@@ -10,7 +10,7 @@ using Veda.Interface;
 
 namespace Veda.Plugins.Google
 {
-    [Plugin(Description = "Provides several services from Google")]
+    [Plugin(Name = "Google", Description = "Provides several services from Google.")]
     public class GooglePlugin
     {
         private static readonly String GOOGLE_SEARCH_URL = 
@@ -39,6 +39,7 @@ namespace Veda.Plugins.Google
 
         private IEnumerable<String> ParseSearchResults(JObject json)
         {
+            // API: https://developers.google.com/web-search/docs/#fonje
             JToken results = json["responseData"]["results"];
             if(results.IsEmpty())
                 "No matches found.".AsEnumerable();
