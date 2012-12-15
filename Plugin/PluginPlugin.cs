@@ -10,7 +10,7 @@ namespace Veda.Plugins.Plugin
         [Command(Description = "Lists all plugins.")]
         public static String List(IContext context)
         {
-            return context.Bot.PluginManager.Plugins
+            return context.Bot.Plugin.Plugins
                 .Select(p => p.Name)
                 .ToString(" ")
                 ;

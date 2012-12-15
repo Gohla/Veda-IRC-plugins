@@ -26,7 +26,7 @@ namespace Veda.Plugins.Info
         [Command(Description = "Shows information about a command in a plugin.")]
         public static IEnumerable<String> Help(IContext context, IPlugin plugin, String command)
         {
-            IEnumerable<ICommand> candidates = context.Bot.CommandManager.GetCommands(plugin.Name, command);
+            IEnumerable<ICommand> candidates = context.Bot.Command.GetCommands(plugin.Name, command);
 
             if(candidates.IsEmpty())
                 throw new ArgumentException("Command " + command + " not found in " + plugin.Name + ".");
