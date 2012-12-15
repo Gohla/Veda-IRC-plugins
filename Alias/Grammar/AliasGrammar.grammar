@@ -4,26 +4,27 @@
 
 %tokens%
 
-  STRING          = <<"([^"\\]|""|\\.)*">>
-  TEXT            = <<[^ \t\n\r~"\\]+>>
+  STRING            = <<"([^"\\$;\[\]]|""|\\.)*">>
+  TEXT              = <<[^ \t\n\r"$;\[\]]+>>
   
-  PARAMETER       = <<(\$[1-9]|\$\*)>>
+  PARAMETER         = <<\$[1-9]>>
   
-  STATEMENT_START = "["
-  STATEMENT_END   = "]"
+  COMMAND_START     = "["
+  COMMAND_END       = "]"
+  COMMAND_SEPARATOR = ";"
   
-  LAYOUT          = <<[ \t\n\r]+>>          %ignore%
+  LAYOUT            = <<[ \t\n\r]+>> %ignore%
 
 %productions%
 
-  Command     = Statement
+  Alias       = Command (COMMAND_SEPARATOR Command)*
               ;
-  
-  Statement   = Expression+
-              | STATEMENT_START Expression+ STATEMENT_END
+
+  Command     = Expression+
               ;
-  
+              
   Expression  = TEXT
               | STRING
               | PARAMETER
+              | COMMAND_START Command COMMAND_END
               ;

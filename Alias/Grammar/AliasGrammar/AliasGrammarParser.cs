@@ -20,6 +20,7 @@ namespace Veda.Plugins.Alias.Grammar {
          * identity constants.</summary>
          */
         private enum SynteticPatterns {
+            SUBPRODUCTION_1 = 3001
         }
 
         /**
@@ -78,22 +79,18 @@ namespace Veda.Plugins.Alias.Grammar {
             ProductionPattern             pattern;
             ProductionPatternAlternative  alt;
 
-            pattern = new ProductionPattern((int) AliasGrammarConstants.COMMAND,
-                                            "Command");
+            pattern = new ProductionPattern((int) AliasGrammarConstants.ALIAS,
+                                            "Alias");
             alt = new ProductionPatternAlternative();
-            alt.AddProduction((int) AliasGrammarConstants.STATEMENT, 1, 1);
+            alt.AddProduction((int) AliasGrammarConstants.COMMAND, 1, 1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_1, 0, -1);
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
-            pattern = new ProductionPattern((int) AliasGrammarConstants.STATEMENT,
-                                            "Statement");
+            pattern = new ProductionPattern((int) AliasGrammarConstants.COMMAND,
+                                            "Command");
             alt = new ProductionPatternAlternative();
             alt.AddProduction((int) AliasGrammarConstants.EXPRESSION, 1, -1);
-            pattern.AddAlternative(alt);
-            alt = new ProductionPatternAlternative();
-            alt.AddToken((int) AliasGrammarConstants.STATEMENT_START, 1, 1);
-            alt.AddProduction((int) AliasGrammarConstants.EXPRESSION, 1, -1);
-            alt.AddToken((int) AliasGrammarConstants.STATEMENT_END, 1, 1);
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
@@ -107,6 +104,20 @@ namespace Veda.Plugins.Alias.Grammar {
             pattern.AddAlternative(alt);
             alt = new ProductionPatternAlternative();
             alt.AddToken((int) AliasGrammarConstants.PARAMETER, 1, 1);
+            pattern.AddAlternative(alt);
+            alt = new ProductionPatternAlternative();
+            alt.AddToken((int) AliasGrammarConstants.COMMAND_START, 1, 1);
+            alt.AddProduction((int) AliasGrammarConstants.COMMAND, 1, 1);
+            alt.AddToken((int) AliasGrammarConstants.COMMAND_END, 1, 1);
+            pattern.AddAlternative(alt);
+            AddPattern(pattern);
+
+            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_1,
+                                            "Subproduction1");
+            pattern.Synthetic = true;
+            alt = new ProductionPatternAlternative();
+            alt.AddToken((int) AliasGrammarConstants.COMMAND_SEPARATOR, 1, 1);
+            alt.AddProduction((int) AliasGrammarConstants.COMMAND, 1, 1);
             pattern.AddAlternative(alt);
             AddPattern(pattern);
         }

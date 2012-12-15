@@ -14,11 +14,12 @@ namespace Veda.Plugins.Alias.Grammar {
         STRING = 1001,
         TEXT = 1002,
         PARAMETER = 1003,
-        STATEMENT_START = 1004,
-        STATEMENT_END = 1005,
-        LAYOUT = 1006,
-        COMMAND = 2001,
-        STATEMENT = 2002,
+        COMMAND_START = 1004,
+        COMMAND_END = 1005,
+        COMMAND_SEPARATOR = 1006,
+        LAYOUT = 1007,
+        ALIAS = 2001,
+        COMMAND = 2002,
         EXPRESSION = 2003
     }
 }

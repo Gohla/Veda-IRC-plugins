@@ -43,31 +43,37 @@ namespace Veda.Plugins.Alias.Grammar {
             pattern = new TokenPattern((int) AliasGrammarConstants.STRING,
                                        "STRING",
                                        TokenPattern.PatternType.REGEXP,
-                                       "\"([^\"\\\\]|\"\"|\\\\.)*\"");
+                                       "\"([^\"\\\\$;\\[\\]]|\"\"|\\\\.)*\"");
             AddPattern(pattern);
 
             pattern = new TokenPattern((int) AliasGrammarConstants.TEXT,
                                        "TEXT",
                                        TokenPattern.PatternType.REGEXP,
-                                       "[^ \\t\\n\\r~\"\\\\]+");
+                                       "[^ \\t\\n\\r\"$;\\[\\]]+");
             AddPattern(pattern);
 
             pattern = new TokenPattern((int) AliasGrammarConstants.PARAMETER,
                                        "PARAMETER",
                                        TokenPattern.PatternType.REGEXP,
-                                       "(\\$[1-9]|\\$\\*)");
+                                       "\\$[1-9]");
             AddPattern(pattern);
 
-            pattern = new TokenPattern((int) AliasGrammarConstants.STATEMENT_START,
-                                       "STATEMENT_START",
+            pattern = new TokenPattern((int) AliasGrammarConstants.COMMAND_START,
+                                       "COMMAND_START",
                                        TokenPattern.PatternType.STRING,
                                        "[");
             AddPattern(pattern);
 
-            pattern = new TokenPattern((int) AliasGrammarConstants.STATEMENT_END,
-                                       "STATEMENT_END",
+            pattern = new TokenPattern((int) AliasGrammarConstants.COMMAND_END,
+                                       "COMMAND_END",
                                        TokenPattern.PatternType.STRING,
                                        "]");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) AliasGrammarConstants.COMMAND_SEPARATOR,
+                                       "COMMAND_SEPARATOR",
+                                       TokenPattern.PatternType.STRING,
+                                       ";");
             AddPattern(pattern);
 
             pattern = new TokenPattern((int) AliasGrammarConstants.LAYOUT,

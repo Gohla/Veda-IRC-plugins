@@ -19,7 +19,7 @@ namespace Veda.Plugins.Plugin
         [Command(Description = "Lists all command in a plugin.")]
         public static String List(IContext context, IPlugin plugin)
         {
-            return plugin.Commands
+            return context.Bot.Command.GetCommands(plugin)
                 .Select(p => p.Name)
                 .Distinct()
                 .ToString(" ")

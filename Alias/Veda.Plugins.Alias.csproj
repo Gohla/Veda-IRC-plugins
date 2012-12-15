@@ -34,16 +34,40 @@
       <HintPath>..\..\Veda-dev\grammatica\lib\grammatica-1.5.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\List\bin\Debug\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AliasCommand.cs" />
+    <Compile Include="AliasPlugin.cs" />
     <Compile Include="Grammar\AliasGrammar\AliasGrammarAnalyzer.cs" />
     <Compile Include="Grammar\AliasGrammar\AliasGrammarConstants.cs" />
     <Compile Include="Grammar\AliasGrammar\AliasGrammarParser.cs" />
     <Compile Include="Grammar\AliasGrammar\AliasGrammarTokenizer.cs" />
+    <Compile Include="ParseAnalyzer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Grammar\AliasGrammar.grammar" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Gohla.Shared\Gohla.Shared\Gohla.Shared.csproj">
+      <Project>{6E1A3F05-4A08-41A0-BAB7-A1B6F3315E2A}</Project>
+      <Name>Gohla.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ReactiveIRC\Interface\ReactiveIRC.Interface.csproj">
+      <Project>{C699BFFA-5FE2-441C-9679-59BEAD165BC6}</Project>
+      <Name>ReactiveIRC.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Veda\Command\Veda.Command.csproj">
+      <Project>{5c8bfb0b-a0cb-4b98-bc8e-e703d9e44f83}</Project>
+      <Name>Veda.Command</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Veda\Interface\Veda.Interface.csproj">
+      <Project>{BFD3723B-68D5-4A3F-8223-58B9C6E72178}</Project>
+      <Name>Veda.Interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
