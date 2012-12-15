@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using PerCederberg.Grammatica.Runtime;
+using ReactiveIRC.Interface;
 using Veda.Interface;
 using Veda.Plugins.Alias.Grammar;
 
@@ -23,7 +23,8 @@ namespace Veda.Plugins.Alias
         {
             _parser.Reset(new StringReader(alias));
             _parser.Parse();
-            AliasCommand command = new AliasCommand(context.Command.Plugin, name, "LOL", _analyzer.Alias);
+            AliasCommand command = new AliasCommand(context.Command.Plugin, name, "Alias for (" 
+                + ControlCodes.Bold(alias) + ")", _analyzer.Alias);
             context.Bot.Command.Add(command);
         }
     }

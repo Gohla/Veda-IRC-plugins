@@ -19,9 +19,10 @@ namespace Veda.Plugins.Alias
 
         public object Evaluate(IContext context, object[] arguments)
         {
-            object[] results = Commands.Select(e => e.Evaluate(context, arguments)).ToArray();
-            // TODO: Bot needs to be able to handle ICallables.
-            return results;
+            return Commands
+                .Select(e => e.Evaluate(context, arguments))
+                .Where(o => o != null)
+                .ToArray();
         }
     }
 
@@ -31,10 +32,19 @@ namespace Veda.Plugins.Alias
 
         public object Evaluate(IContext context, object[] arguments)
         {
-            object[] results = Expressions.Select(e => e.Evaluate(context, arguments)).ToArray();
-            // TODO: Exception handling?
-            ICallable callable = context.Bot.Command.CallParsed(context.ConversionContext, results);
-            return callable;
+            object[] results = Expressions
+                .Select(e => e.Evaluate(context, arguments))
+                .ToArray();
+
+            try
+            {
+                ICallable callable = context.Bot.Command.CallParsed(context.ConversionContext, results);
+                return callable;
+            }
+            catch(Exception e)
+            {
+                return e;
+            }
         }
     }
 
@@ -54,7 +64,7 @@ namespace Veda.Plugins.Alias
 
         public object Evaluate(IContext context, object[] arguments)
         {
-            return arguments[Index];
+            return arguments[Index - 1];
         }
     }
 
