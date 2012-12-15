@@ -12,6 +12,8 @@
 /packages
 !.nuget/nuget.exe
 
+/Alias/bin
+/Alias/obj
 /Google/bin
 /Google/obj
 /Info/bin

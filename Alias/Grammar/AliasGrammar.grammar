@@ -1,0 +1,29 @@
+%header%
+
+  GRAMMARTYPE = "LL"
+
+%tokens%
+
+  STRING          = <<"([^"\\]|""|\\.)*">>
+  TEXT            = <<[^ \t\n\r~"\\]+>>
+  
+  PARAMETER       = <<(\$[1-9]|\$\*)>>
+  
+  STATEMENT_START = "["
+  STATEMENT_END   = "]"
+  
+  LAYOUT          = <<[ \t\n\r]+>>          %ignore%
+
+%productions%
+
+  Command     = Statement
+              ;
+  
+  Statement   = Expression+
+              | STATEMENT_START Expression+ STATEMENT_END
+              ;
+  
+  Expression  = TEXT
+              | STRING
+              | PARAMETER
+              ;
