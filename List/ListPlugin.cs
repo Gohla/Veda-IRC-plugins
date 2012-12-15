@@ -50,7 +50,6 @@ namespace Veda.Plugins.List
         {
             List<object> list = GetListThrows(context, identifier);
             list.Add(item);
-            context.Storage.Set(identifier, list); // TODO: Should be cached, very inefficient!
         }
 
         [Command(Description = "Removes given item from a list.")]
@@ -58,7 +57,6 @@ namespace Veda.Plugins.List
         {
             List<object> list = GetListThrows(context, identifier);
             list.Remove(item);
-            context.Storage.Set(identifier, list); // TODO: Should be cached, very inefficient!
         }
 
         [Command(Description = "Removes item at given index from a list.")]
@@ -66,7 +64,6 @@ namespace Veda.Plugins.List
         {
             List<object> list = GetListThrows(context, identifier);
             list.RemoveAt(index);
-            context.Storage.Set(identifier, list); // TODO: Should be cached, very inefficient!
         }
 
         [Command(Description = "Clears a list.")]
@@ -74,7 +71,6 @@ namespace Veda.Plugins.List
         {
             List<object> list = GetListThrows(context, identifier);
             list.Clear();
-            context.Storage.Set(identifier, list); // TODO: Should be cached, very inefficient!
         }
 
         [Command(Description = "Gets the size of a list.")]
