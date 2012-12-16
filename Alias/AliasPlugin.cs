@@ -17,38 +17,53 @@ namespace Veda.Plugins.Alias
         private readonly AliasGrammarParser _parser;
         private readonly MultiValueDictionary<String, ushort> _unqualifiedAliases =
             new MultiValueDictionary<String, ushort>();
+        private readonly Dictionary<QualifiedNameTypes, AliasExpression> _aliases =
+            new Dictionary<QualifiedNameTypes, AliasExpression>();
         private readonly Dictionary<QualifiedNameTypes, AliasCommand> _commands = 
-            new Dictionary<QualifiedNameTypes, AliasCommand>(); 
+            new Dictionary<QualifiedNameTypes, AliasCommand>();
 
-        public Dictionary<QualifiedNameTypes, AliasExpression> Aliases { get; set; }
+        public List<AliasExpression> Aliases { get; set; }
 
         public AliasPlugin()
         {
             _parser = new AliasGrammarParser(new StringReader(String.Empty), _analyzer);
             _parser.Prepare();
 
-            Aliases = new Dictionary<QualifiedNameTypes, AliasExpression>();
+            Aliases = new List<AliasExpression>();
+        }
+
+        [Loaded]
+        public void Loaded(IPlugin plugin, IBot bot)
+        {
+            foreach(AliasExpression alias in Aliases)
+            {
+                Add(bot.Command, plugin, alias, false);
+            }
         }
 
         [Command(Description = "Adds an alias with given name.")]
-        public void Add(IContext context, String name, String alias)
+        public void Add(IContext context, String name, String expression)
         {
-            _parser.Reset(new StringReader(alias));
+            _parser.Reset(new StringReader(expression));
             _parser.Parse();
             AliasExpression aliasExpression = _analyzer.Alias;
+            aliasExpression.Name = name;
+            aliasExpression.Expression = expression;
 
-            Add(context.Bot.Command, context.Command.Plugin, name, alias, aliasExpression);
+            Add(context.Bot.Command, context.Command.Plugin, aliasExpression, true);
         }
 
         [Command(Description = "Replaces alias with given name.")]
-        public void Set(IContext context, String name, String alias)
+        public void Set(IContext context, String name, String expression)
         {
-            _parser.Reset(new StringReader(alias));
+            _parser.Reset(new StringReader(expression));
             _parser.Parse();
             AliasExpression aliasExpression = _analyzer.Alias;
+            aliasExpression.Name = name;
+            aliasExpression.Expression = expression;
 
             Remove(context.Bot.Command, context.Command.Plugin, name, aliasExpression.Arity);
-            Add(context.Bot.Command, context.Command.Plugin, name, alias, aliasExpression);
+            Add(context.Bot.Command, context.Command.Plugin, aliasExpression, true);
         }
 
         [Command(Description = "Removes an alias with given name.")]
@@ -70,40 +85,43 @@ namespace Veda.Plugins.Alias
             Remove(context.Bot.Command, context.Command.Plugin, name, arity);
         }
 
-        private void Add(ICommandManager commandManager, IPlugin plugin, String name, String alias, 
-            AliasExpression aliasExpression)
+        private void Add(ICommandManager commandManager, IPlugin plugin, AliasExpression aliasExpression, bool store)
         {
             ushort arity = aliasExpression.Arity;
             QualifiedNameTypes qualifiedName =
-                QualifiedAliasName(plugin.Name, name, arity);
+                QualifiedAliasName(plugin.Name, aliasExpression.Name, arity);
 
-            if(Aliases.ContainsKey(qualifiedName))
-                throw new InvalidOperationException("Alias with name " + name + " and arity " + arity
+            if(_aliases.ContainsKey(qualifiedName) || _commands.ContainsKey(qualifiedName))
+                throw new InvalidOperationException("Alias with name " + aliasExpression.Name + " and arity " + arity
                     + " already exists.");
 
-            AliasCommand command = new AliasCommand(plugin, name, "Alias for ("
-                + ControlCodes.Bold(alias) + ")", aliasExpression);
+            AliasCommand command = new AliasCommand(plugin, aliasExpression.Name,
+                "Alias for (" + ControlCodes.Bold(aliasExpression.Expression) + ")", aliasExpression);
             commandManager.Add(command);
 
-            _unqualifiedAliases.Add(name, arity);
+            _unqualifiedAliases.Add(aliasExpression.Name, arity);
             _commands.Add(qualifiedName, command);
-            Aliases.Add(qualifiedName, aliasExpression);
+            _aliases.Add(qualifiedName, aliasExpression);
+            if(store)
+                Aliases.Add(aliasExpression);
         }
 
         private void Remove(ICommandManager commandManager, IPlugin plugin, String name, ushort arity)
         {
             QualifiedNameTypes qualifiedName = QualifiedAliasName(plugin.Name, name, arity);
 
-            if(!Aliases.ContainsKey(qualifiedName) || !_commands.ContainsKey(qualifiedName))
+            if(!_aliases.ContainsKey(qualifiedName) || !_commands.ContainsKey(qualifiedName))
                 throw new InvalidOperationException("Alias with name " + name + " and arity " + arity
                     + " does not exist.");
 
+            AliasExpression aliasExpression = _aliases[qualifiedName];
             AliasCommand command = _commands[qualifiedName];
             commandManager.Remove(command);
 
             _unqualifiedAliases.Remove(name, arity);
             _commands.Remove(qualifiedName);
-            Aliases.Remove(qualifiedName);
+            _aliases.Remove(qualifiedName);
+            Aliases.Remove(aliasExpression);
         }
 
         private QualifiedNameTypes QualifiedAliasName(String pluginName, String name, ushort arity)
