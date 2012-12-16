@@ -15,6 +15,8 @@ namespace Veda.Plugins.Google
     {
         private static readonly String GOOGLE_SEARCH_URL = 
             @"https://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=";
+        private static readonly String GOOGLE_CALCULATOR_URL =
+            @"http://www.google.com/ig/calculator?hl=en&q=";
         private ObservableJSONWebRequest _webRequest = new ObservableJSONWebRequest();
 
         public ushort MaxSearchResults { get; set; }
@@ -24,11 +26,27 @@ namespace Veda.Plugins.Google
             MaxSearchResults = 3;
         }
 
-        [Command(Description = "Searches Google with the given search query, returns the title and URL of matches.")]
-        public IObservable<IEnumerable<String>> Google(IContext context, String query)
+        [Command(Description = "Searches Google with the given search query. Returns the title and URL of matches.")]
+        public IObservable<IEnumerable<String>> Search(IContext context, String query)
         {
             return _webRequest.Request(SearchURL(query), x => x)
                 .Select(ParseSearchResults)
+                ;
+        }
+
+        [Command(Description = "Searches Google with the given search query. Returns the URL that would be navigated to when using the \"I'm Feeling Lucky\" button.")]
+        public IObservable<String> Lucky(IContext context, String query)
+        {
+            return _webRequest.Request(SearchURL(query), x => x)
+                .Select(ParseLuckyResults)
+                ;
+        }
+
+        [Command(Description = "Evaluates given query using the Google calculator.")]
+        public IObservable<String> Calculate(IContext context, String query)
+        {
+            return _webRequest.Request(CalculatorURL(query), x => x)
+                .Select(ParseCalculatorResults)
                 ;
         }
 
@@ -42,7 +60,7 @@ namespace Veda.Plugins.Google
             // API: https://developers.google.com/web-search/docs/#fonje
             JToken results = json["responseData"]["results"];
             if(results.IsEmpty())
-                "No matches found.".AsEnumerable();
+                throw new InvalidOperationException("No matches found.");
 
             return results
                 .Take(MaxSearchResults)
@@ -54,6 +72,37 @@ namespace Veda.Plugins.Google
         {
             return ControlCodes.Bold(json["titleNoFormatting"].Value<String>())
                 + ": <" + json["unescapedUrl"].Value<String>() + ">";
+        }
+
+        private String ParseLuckyResults(JObject json)
+        {
+            JToken results = json["responseData"]["results"];
+            if(results.IsEmpty())
+                throw new InvalidOperationException("No match found.");
+
+            return ParseLuckyResults(results.First());
+        }
+
+        private String ParseLuckyResults(JToken json)
+        {
+            return json["unescapedUrl"].Value<String>();
+        }
+
+        private String CalculatorURL(String query)
+        {
+            return GOOGLE_CALCULATOR_URL + HttpUtility.UrlEncode(query);
+        }
+
+        private String ParseCalculatorResults(JToken json)
+        {
+            String error = json["error"].Value<String>();
+            if(!String.IsNullOrWhiteSpace(error))
+                throw new InvalidOperationException("Could not evaluate query.");
+
+            String lhs = json["lhs"].Value<String>();
+            String rhs = json["rhs"].Value<String>();
+
+            return lhs + " = " + rhs;
         }
     }
 }
