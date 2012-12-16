@@ -39,7 +39,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InfoPlugin.cs" />
+    <Compile Include="CorePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

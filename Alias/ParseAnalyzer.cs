@@ -84,8 +84,7 @@ namespace Veda.Plugins.Alias
             base.Reset();
 
             _commandStack.Clear();
-            Alias.Commands.Clear();
-            Alias.Arity = 0;
+            Alias = new AliasExpression();
         }
 
         public override void EnterCommand(Production node)
