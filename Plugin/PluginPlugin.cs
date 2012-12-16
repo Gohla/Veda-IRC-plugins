@@ -20,7 +20,7 @@ namespace Veda.Plugins.Plugin
         public static String List(IContext context, IPlugin plugin)
         {
             return context.Bot.Command.GetCommands(plugin)
-                .Select(p => p.Name)
+                .Select(p => p.Name.ToLower())
                 .Distinct()
                 .ToString(" ")
                 ;
