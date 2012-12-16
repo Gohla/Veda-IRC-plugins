@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using PerCederberg.Grammatica.Runtime;
 using Veda.Interface;
 using Veda.Plugins.Alias.Grammar;
@@ -9,22 +10,22 @@ namespace Veda.Plugins.Alias
 {
     public interface Expression
     {
-        object Evaluate(IContext context, object[] arguments);
+        IObservable<object> Evaluate(IContext context, object[] arguments);
     }
 
-    public class AliasExpression : Expression
+    public class AliasExpression
     {
         public List<CommandExpression> Commands = new List<CommandExpression>();
         public String Name;
         public String Expression;
         public ushort Arity = 0;
 
-        public object Evaluate(IContext context, object[] arguments)
+        public IObservable<object> Evaluate(IContext context, object[] arguments)
         {
             return Commands
-                .Select(e => e.Evaluate(context, arguments))
-                .Where(o => o != null)
-                .ToArray();
+                .Select(command => context.Evaluate(command.Evaluate(context, arguments)))
+                .Concat()
+                ;
         }
     }
 
@@ -32,20 +33,21 @@ namespace Veda.Plugins.Alias
     {
         public List<Expression> Expressions = new List<Expression>();
 
-        public object Evaluate(IContext context, object[] arguments)
+        public IObservable<object> Evaluate(IContext context, object[] arguments)
         {
-            object[] results = Expressions
-                .Select(e => e.Evaluate(context, arguments))
-                .ToArray();
+            var results = Expressions
+                .Select(e => context.Evaluate(e.Evaluate(context, arguments)).Wait()) // TODO: Wait() is blocking!
+                .ToArray()
+                ;
 
             try
             {
                 ICallable callable = context.Bot.Command.CallParsed(context.ConversionContext, results);
-                return callable;
+                return context.Evaluate(callable);
             }
             catch(Exception e)
             {
-                return e;
+                return Observable.Throw<String>(e);
             }
         }
     }
@@ -54,9 +56,9 @@ namespace Veda.Plugins.Alias
     {
         public String Text;
 
-        public object Evaluate(IContext context, object[] arguments)
+        public IObservable<object> Evaluate(IContext context, object[] arguments)
         {
-            return Text;
+            return Observable.Return(Text);
         }
     }
 
@@ -64,9 +66,9 @@ namespace Veda.Plugins.Alias
     {
         public ushort Index;
 
-        public object Evaluate(IContext context, object[] arguments)
+        public IObservable<object> Evaluate(IContext context, object[] arguments)
         {
-            return arguments[Index - 1];
+            return Observable.Return(arguments[Index - 1]);
         }
     }
 
