@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gohla.Shared;
 using Veda.Interface;
 
-namespace Veda.Plugins.Info
+namespace Veda.Plugins.Core
 {
-    [Plugin(Name = "Info", Description = "Provides information about plugins and commands.")]
-    public static class InfoPlugin
+    [Plugin(Name = "Core", Description = "Provides several core functionality such as help and echoing.")]
+    public static class CorePlugin
     {
         [Command(Description = "Shows information about a command.")]
         public static IEnumerable<String> Help(IContext context, IEnumerable<ICommand> command)
@@ -34,6 +33,18 @@ namespace Veda.Plugins.Info
             return candidates
                 .Select(c => c.ToString() + ": " + c.Description)
                 ;
+        }
+
+        [Command(Description = "Echoes message to the channel the command was sent to, or to the user that sent the command.")]
+        public static String Echo(IContext context, String message)
+        {
+            return message;
+        }
+
+        [Command(Description = "Replies to the user that sent this command.")]
+        public static String Reply(IContext context, String reply)
+        {
+            return context.Message.Sender.Name + ": " + reply;
         }
     }
 }

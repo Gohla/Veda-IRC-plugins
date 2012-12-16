@@ -7,8 +7,8 @@
     <ProjectGuid>{B7B82246-2E3B-4F8B-9573-CD7CC507A5B9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Veda.Plugins.Info</RootNamespace>
-    <AssemblyName>Veda.Plugins.Info</AssemblyName>
+    <RootNamespace>Veda.Plugins.Core</RootNamespace>
+    <AssemblyName>Veda.Plugins.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Veda-dev\</SolutionDir>
@@ -46,6 +46,10 @@
     <ProjectReference Include="..\..\Gohla.Shared\Gohla.Shared\Gohla.Shared.csproj">
       <Project>{6E1A3F05-4A08-41A0-BAB7-A1B6F3315E2A}</Project>
       <Name>Gohla.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ReactiveIRC\Interface\ReactiveIRC.Interface.csproj">
+      <Project>{c699bffa-5fe2-441c-9679-59bead165bc6}</Project>
+      <Name>ReactiveIRC.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Veda\Interface\Veda.Interface.csproj">
       <Project>{bfd3723b-68d5-4a3f-8223-58b9c6e72178}</Project>

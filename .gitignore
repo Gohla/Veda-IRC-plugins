@@ -14,10 +14,10 @@
 
 /Alias/bin
 /Alias/obj
+/Core/bin
+/Core/obj
 /Google/bin
 /Google/obj
-/Info/bin
-/Info/obj
 /List/bin
 /List/obj
 /Plugin/bin
