@@ -10,31 +10,31 @@ namespace Veda.Plugins.Channel
         [Command(Description = "Joins given channel.")]
         public static void Join(IContext context, String channelName)
         {
-            context.Message.Connection.Join(channelName);
+            context.Connection.Join(channelName);
         }
 
         [Command(Description = "Parts given channel.")]
         public static void Part(IContext context, IChannel channel)
         {
-            context.Message.Connection.Part(channel);
+            context.Connection.Part(channel);
         }
 
         [Command(Description = "Parts given channel with a part message.")]
         public static void Part(IContext context, IChannel channel, String message)
         {
-            context.Message.Connection.Part(channel, message);
+            context.Connection.Part(channel, message);
         }
 
         [Command(Description = "Parts and joins given channel.")]
         public static void Hop(IContext context, IChannel channel)
         {
-            context.Message.Connection.Hop(channel);
+            context.Connection.Hop(channel);
         }
 
         [Command(Description = "Parts and joins given channel with a part message.")]
         public static void Hop(IContext context, IChannel channel, String message)
         {
-            context.Message.Connection.Hop(channel, message);
+            context.Connection.Hop(channel, message);
         }
 
         [Command(Description = "Kicks a user from the channel.")]

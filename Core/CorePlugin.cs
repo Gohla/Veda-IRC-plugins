@@ -44,7 +44,7 @@ namespace Veda.Plugins.Core
         [Command(Description = "Replies to the user that sent this command.")]
         public static String Reply(IContext context, String reply)
         {
-            return context.Message.Sender.Name + ": " + reply;
+            return context.Sender.Name + ": " + reply;
         }
     }
 }
