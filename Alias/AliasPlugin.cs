@@ -96,7 +96,7 @@ namespace Veda.Plugins.Alias
                     + " already exists.");
 
             AliasCommand command = new AliasCommand(plugin, aliasExpression.Name,
-                "Alias for (" + ControlCodes.Bold(aliasExpression.Expression) + ")", aliasExpression);
+                "Alias for (" + ControlCodes.Bold(aliasExpression.Expression) + ")", false, aliasExpression);
             commandManager.Add(command);
 
             _unqualifiedAliases.Add(aliasExpression.Name, arity);
