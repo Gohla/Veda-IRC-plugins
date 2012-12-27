@@ -15,7 +15,7 @@ namespace Veda.Plugins.List
             List<object> list = storage.Get<List<object>>(identifier);
             if(list != null)
                 throw new ArgumentException("List with given identifier already exists globally.", "identifier");
-            storage.Set(identifier, new List<object>());
+            storage.Set(new List<object>(), identifier);
         }
 
         [Command(Description = "Creates a server-scoped list on given server with given identifier. Server parameter may be omitted to select the current server.")]
@@ -25,7 +25,7 @@ namespace Veda.Plugins.List
             List<object> list = storage.Get<List<object>>(identifier);
             if(list != null)
                 throw new ArgumentException("List with given identifier already exists for given server.", "identifier");
-            storage.Set(identifier, new List<object>());
+            storage.Set(new List<object>(), identifier);
         }
 
         [Command(Description = "Creates a channel-scoped list on given channel with given identifier. Channel parameter may be omitted to select the current channel.")]
@@ -35,7 +35,7 @@ namespace Veda.Plugins.List
             List<object> list = storage.Get<List<object>>(identifier);
             if(list != null)
                 throw new ArgumentException("List with given identifier already exists for given channel.", "identifier");
-            storage.Set(identifier, new List<object>());
+            storage.Set(new List<object>(), identifier);
         }
 
         [Command(Description = "Gets item from a list at given index.")]
