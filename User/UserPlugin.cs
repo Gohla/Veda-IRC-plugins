@@ -89,6 +89,24 @@ namespace Veda.Plugins.User
             return context.Bot.Authentication.GetUser(user).Group.Name;
         }
 
+        [Command(Description = "Sets the group for given user."), Permission(Veda.Interface.Group.Administrator, 
+            Allowed = true), Permission(Veda.Interface.Group.Owner, Allowed = true)]
+        public static void SetGroup(IContext context, IBotUser botUser, IBotGroup group)
+        {
+            EnsureIdentified(context);
+
+            if(context.User.Equals(botUser))
+                throw new InvalidOperationException("Cannot set your own group.");
+
+            if(botUser.Group.IsMoreOrSamePrivileged(context.User.Group))
+                throw new InvalidOperationException("Cannot set group for users that have the same or more privileges than yourself.");
+
+            if(group.IsMoreOrSamePrivileged(context.User.Group))
+                throw new InvalidOperationException("Cannot set group to one that has the same or more privileges than yourself.");
+
+            botUser.Group = group;
+        }
+
         private static void EnsureIdentified(IContext context, IUser user)
         {
             if(!context.Bot.Authentication.IsIdentified(user))
