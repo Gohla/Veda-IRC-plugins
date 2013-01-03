@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using ReactiveIRC.Interface;
 using Veda.Interface;
-using System.Linq;
 
 namespace Veda.Plugins.User
 {
@@ -19,24 +18,6 @@ namespace Veda.Plugins.User
         public static void Identify(IContext context, String username, String password)
         {
             context.Bot.Authentication.Identify(context.Sender, username, password);
-        }
-
-        [Command(Description = "Retrieves your identity.")]
-        public static IIdentity Identity(IContext context)
-        {
-            return context.Sender.Identity;
-        }
-
-        [Command(Description = "Retrieves the identity of given user.")]
-        public static IIdentity Identity(IContext context, IUser user)
-        {
-            return user.Identity;
-        }
-
-        [Command(Description = "Tries to match given identity to given identity mask.")]
-        public static bool IdentityMatch(IContext context, IIdentity identity, IdentityMask mask)
-        {
-            return mask.Match(identity);
         }
 
         [Command(Description = "Adds your current identity mask to your identity masks. Any commands invoked under that mask are automatically identified as you.")]
