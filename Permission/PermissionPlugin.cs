@@ -8,24 +8,25 @@ namespace Veda.Plugins.Permission
     [Plugin(Name = "Permission", Description = "Permission management.")]
     public static class PermissionPlugin
     {
-        [Command, Permission(Group.Administrator, Allowed = true), Permission(Group.Owner, Allowed = true)]
+        [Command(Description = "Sets if given group may execute given command."), Permission(Group.Administrator, 
+            Allowed = true), Permission(Group.Owner, Allowed = true)]
         public static void SetAllowed(IContext context, ICommand command, IBotGroup group, bool allowed)
         {
             EnsureAllowGroup(context, group);
             context.Bot.Permission.GetPermission(command, group).Allowed = allowed;
         }
 
-        [Command, Permission(Group.Administrator, Allowed = true), Permission(Group.Owner, Allowed = true)]
+        [Command(Description = "Sets a limit on the number of times given command maybe executed by members from given group, within a timespan (in milliseconds)."), Permission(Group.Administrator, Allowed = true), Permission(Group.Owner, Allowed = true)]
         public static void SetLimit(IContext context, ICommand command, IBotGroup group, ushort limit, 
-            TimeSpan timespan)
+            ulong timespan)
         {
             EnsureAllowGroup(context, group);
             IPermission permission = context.Bot.Permission.GetPermission(command, group);
             permission.Limit = limit;
-            permission.Timespan = timespan;
+            permission.Timespan = TimeSpan.FromMilliseconds(timespan);
         }
 
-        [Command]
+        [Command(Description = "Gets the permissions for given command.")]
         public static IEnumerable<IPermission> Permissions(IContext context, ICommand command)
         {
             IEnumerable<IPermission> permissions = context.Bot.Authentication.Groups
@@ -34,7 +35,7 @@ namespace Veda.Plugins.Permission
                 ;
 
             if(permissions.IsEmpty())
-                throw new ArgumentException("This command has no permissions, it is always allowed.");
+                throw new ArgumentException("Given command has no permissions.");
 
             return permissions;
         }
