@@ -57,6 +57,7 @@
     <Compile Include="Grammar\AliasGrammar\AliasGrammarParser.cs" />
     <Compile Include="Grammar\AliasGrammar\AliasGrammarTokenizer.cs" />
     <Compile Include="ParseAnalyzer.cs" />
+    <Compile Include="UnparsedAlias.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

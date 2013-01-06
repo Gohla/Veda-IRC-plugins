@@ -16,8 +16,6 @@ namespace Veda.Plugins.Alias
     public class AliasExpression
     {
         public List<CommandExpression> Commands = new List<CommandExpression>();
-        public String Name;
-        public String Expression;
         public ushort Arity = 0;
 
         public IObservable<object> Evaluate(IContext context, object[] arguments)
