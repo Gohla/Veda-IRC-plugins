@@ -12,7 +12,7 @@ namespace Veda.Plugins.Core
         public static IEnumerable<String> Help(IContext context, IEnumerable<ICommand> command)
         {
             return command
-                .Select(c => c.ToString() + ": " + c.Description)
+                .Select(c => c.ToString() + " -- " + c.Description)
                 ;
         }
 
@@ -31,20 +31,36 @@ namespace Veda.Plugins.Core
                 throw new ArgumentException("Command " + command + " not found in " + plugin.Name + ".");
 
             return candidates
-                .Select(c => c.ToString() + ": " + c.Description)
+                .Select(c => c.ToString() + " -- " + c.Description)
                 ;
         }
 
         [Command(Description = "Echoes message to the channel the command was sent to, or to the user that sent the command.")]
         public static String Echo(IContext context, String message)
         {
+            context.ReplyForm = ReplyForm.Echo;
             return message;
         }
 
         [Command(Description = "Replies to the user that sent this command.")]
         public static String Reply(IContext context, String reply)
         {
-            return context.Sender.Name + ": " + reply;
+            context.ReplyForm = ReplyForm.Reply;
+            return reply;
+        }
+
+        [Command(Description = "Sends an action message to the channel the command was sent to, or to the user that sent the command.")]
+        public static String Action(IContext context, String action)
+        {
+            context.ReplyForm = ReplyForm.Action;
+            return action;
+        }
+
+        [Command(Description = "Sends a notice to the channel the command was sent to, or to the user that sent the command.")]
+        public static String Notice(IContext context, String notice)
+        {
+            context.ReplyForm = ReplyForm.Notice;
+            return notice;
         }
     }
 }
