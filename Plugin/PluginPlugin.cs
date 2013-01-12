@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Veda.Interface;
 
@@ -8,22 +9,28 @@ namespace Veda.Plugins.Plugin
     public static class PluginPlugin
     {
         [Command(Description = "Lists all plugins.")]
-        public static String List(IContext context)
+        public static IEnumerable<String> List(IContext context)
         {
-            return context.Bot.Plugin.Plugins
+            IEnumerable<String> pluginNames = context.Bot.Plugin.Plugins
                 .Select(p => p.Name)
-                .ToString(" ")
                 ;
+
+            context.Seperator = " ";
+
+            return pluginNames;
         }
 
         [Command(Description = "Lists all command in a plugin.")]
-        public static String List(IContext context, IPlugin plugin)
+        public static IEnumerable<String> List(IContext context, IPlugin plugin)
         {
-            return context.Bot.Command.GetCommands(plugin)
+            IEnumerable<String> commandNames = context.Bot.Command.GetCommands(plugin)
                 .Select(p => p.Name.ToLower())
                 .Distinct()
-                .ToString(" ")
                 ;
+
+            context.Seperator = ", ";
+
+            return commandNames;
         }
     }
 }
