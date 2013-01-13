@@ -33,28 +33,28 @@ namespace Veda.Plugins.User
             context.Bot.Authentication.Unidentify(context.Sender);
         }
 
-        [Command(Description = "Adds your current identity mask to your identity masks. Any commands invoked under that mask are automatically identified as you.")]
+        [Command(Name = "add mask", Description = "Adds your current identity mask to your identity masks. Any commands invoked under that mask are automatically identified as you.")]
         public static void AddMask(IContext context)
         {
             EnsureIdentified(context);
             context.Bot.Authentication.AddMask(context.User, new IdentityMask(context.Sender.Identity));
         }
 
-        [Command(Description = "Adds an identity mask to your identity masks. Any commands invoked under that mask are automatically identified as you.")]
+        [Command(Name = "add mask", Description = "Adds an identity mask to your identity masks. Any commands invoked under that mask are automatically identified as you.")]
         public static void AddMask(IContext context, IdentityMask mask)
         {
             EnsureIdentified(context);
             context.Bot.Authentication.AddMask(context.User, mask);
         }
 
-        [Command(Description = "Remove a mask from your identity masks.")]
+        [Command(Name = "remove mask", Description = "Remove a mask from your identity masks.")]
         public static void RemoveMask(IContext context, IdentityMask mask)
         {
             EnsureIdentified(context);
             context.Bot.Authentication.RemoveMask(context.User, mask);
         }
 
-        [Command(Description = "Lists your identity masks.")]
+        [Command(Name = "list masks", Description = "Lists your identity masks.")]
         public static IEnumerable<IdentityMask> ListMasks(IContext context)
         {
             EnsureIdentified(context);
@@ -89,7 +89,7 @@ namespace Veda.Plugins.User
             return context.Bot.Authentication.GetUser(user).Group.Name;
         }
 
-        [Command(Description = "Sets the group for given user."), Permission(Veda.Interface.Group.Administrator, 
+        [Command(Name = "set group", Description = "Sets the group for given user."), Permission(Veda.Interface.Group.Administrator, 
             Allowed = true), Permission(Veda.Interface.Group.Owner, Allowed = true)]
         public static void SetGroup(IContext context, IBotUser botUser, IBotGroup group)
         {

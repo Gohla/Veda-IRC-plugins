@@ -8,7 +8,7 @@ namespace Veda.Plugins.Permission
     [Plugin(Name = "Permission", Description = "Permission management.")]
     public static class PermissionPlugin
     {
-        [Command(Description = "Sets if given group may execute given command."), Permission(Group.Administrator,
+        [Command(Name = "set allowed", Description = "Sets if given group may execute given command."), Permission(Group.Administrator,
             Allowed = true), Permission(Group.Owner, Allowed = true)]
         public static void SetAllowed(IContext context, ICommand command, IBotGroup group, bool allowed)
         {
@@ -17,7 +17,7 @@ namespace Veda.Plugins.Permission
             context.Bot.Permission.GetPermission(command, group).Allowed = allowed;
         }
 
-        [Command(Description = "Removes the permission that decides if given group may execute given command."),
+        [Command(Name = "remove allowed", Description = "Removes the permission that decides if given group may execute given command."),
             Permission(Group.Administrator, Allowed = true), Permission(Group.Owner, Allowed = true)]
         public static void RemoveAllowed(IContext context, ICommand command, IBotGroup group)
         {
@@ -30,7 +30,7 @@ namespace Veda.Plugins.Permission
             permission.HasAllowed = false;
         }
 
-        [Command(Description = "Sets a limit on the number of times given command maybe executed by members from" + 
+        [Command(Name = "set limit", Description = "Sets a limit on the number of times given command maybe executed by members from" + 
             " given group, within a timespan (in milliseconds)."), Permission(Group.Administrator, Allowed = true), 
             Permission(Group.Owner, Allowed = true)]
         public static void SetLimit(IContext context, ICommand command, IBotGroup group, ushort limit,
@@ -43,7 +43,7 @@ namespace Veda.Plugins.Permission
             permission.Timespan = TimeSpan.FromMilliseconds(timespan);
         }
 
-        [Command(Description = "Removes the permission that sets a limit on the number of times given command may be" + 
+        [Command(Name = "remove limit", Description = "Removes the permission that sets a limit on the number of times given command may be" + 
             " executed by members from given group."), Permission(Group.Administrator, Allowed = true), 
             Permission(Group.Owner, Allowed = true)]
         public static void RemoveLimit(IContext context, ICommand command, IBotGroup group)

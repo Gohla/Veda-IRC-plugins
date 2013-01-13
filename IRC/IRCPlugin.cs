@@ -18,7 +18,7 @@ namespace Veda.Plugins.IRC
             return user.Identity;
         }
 
-        [Command(Description = "Tries to match given identity to given identity mask.")]
+        [Command(Name = "identity match", Description = "Tries to match given identity to given identity mask.")]
         public static bool IdentityMatch(IContext context, IIdentity identity, IdentityMask mask)
         {
             return mask.Match(identity);
