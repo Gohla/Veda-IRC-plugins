@@ -8,6 +8,31 @@ namespace Veda.Plugins.Core
     [Plugin(Name = "Core", Description = "Provides several core functionality such as help and echoing.")]
     public static class CorePlugin
     {
+        [Command(Description = "Lists all plugins.")]
+        public static IEnumerable<String> List(IContext context)
+        {
+            IEnumerable<String> pluginNames = context.Bot.Plugin.Plugins
+                .Select(p => p.Name)
+                ;
+
+            context.Seperator = " ";
+
+            return pluginNames;
+        }
+
+        [Command(Description = "Lists all command in a plugin.")]
+        public static IEnumerable<String> List(IContext context, IPlugin plugin)
+        {
+            IEnumerable<String> commandNames = context.Bot.Command.GetCommands(plugin)
+                .Select(p => p.Name.ToLower())
+                .Distinct()
+                ;
+
+            context.Seperator = ", ";
+
+            return commandNames;
+        }
+
         [Command(Description = "Shows information about a command.")]
         public static IEnumerable<String> Help(IContext context, IEnumerable<ICommand> command)
         {
