@@ -99,8 +99,11 @@ namespace Veda.Plugins.Google
             if(!String.IsNullOrWhiteSpace(error))
                 throw new InvalidOperationException("Could not evaluate query.");
 
-            String lhs = json["lhs"].Value<String>();
-            String rhs = json["rhs"].Value<String>();
+            String lhs = HttpUtility.HtmlDecode(json["lhs"].Value<String>());
+            String rhs = HttpUtility.HtmlDecode(json["rhs"].Value<String>())
+                .Replace("<sup>", "^")
+                .Replace("</sup>", "")
+                ;
 
             return lhs + " = " + rhs;
         }
