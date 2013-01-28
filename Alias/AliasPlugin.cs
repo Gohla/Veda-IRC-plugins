@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Gohla.Shared;
 using ReactiveIRC.Interface;
 using Veda.Command;
 using Veda.Interface;
-using Veda.Plugins.Alias.Grammar;
 
 namespace Veda.Plugins.Alias
 {
     [Plugin(Name = "Alias", Description = "Creates new commands under an alias that can call and combine other commands.")]
     public class AliasPlugin
     {
-        private readonly ParseAnalyzer _analyzer = new ParseAnalyzer();
-        private readonly AliasGrammarParser _parser;
         private readonly MultiValueDictionary<String, ushort> _unqualifiedAliases =
             new MultiValueDictionary<String, ushort>();
         private readonly Dictionary<QualifiedNameTypes, UnparsedAlias> _aliases =
@@ -26,9 +22,6 @@ namespace Veda.Plugins.Alias
 
         public AliasPlugin()
         {
-            _parser = new AliasGrammarParser(new StringReader(String.Empty), _analyzer);
-            _parser.Prepare();
-
             Aliases = new HashSet<UnparsedAlias>();
         }
 
@@ -37,7 +30,7 @@ namespace Veda.Plugins.Alias
         {
             foreach(UnparsedAlias alias in Aliases)
             {
-                AliasExpression aliasExpression = Parse(alias.Expression);
+                IExpression aliasExpression = Parse(bot.Command, alias.Expression);
                 Add(bot.Command, plugin, alias, aliasExpression, false);
             }
         }
@@ -45,7 +38,7 @@ namespace Veda.Plugins.Alias
         [Command(Description = "Adds an alias with given name.")]
         public void Add(IContext context, String name, String expression)
         {
-            AliasExpression aliasExpression = Parse(expression);
+            IExpression aliasExpression = Parse(context.Bot.Command, expression);
             Add(context.Bot.Command, context.Command.Plugin, new UnparsedAlias(name, expression), aliasExpression, 
                 true);
         }
@@ -53,7 +46,7 @@ namespace Veda.Plugins.Alias
         [Command(Description = "Replaces alias with given name.")]
         public void Set(IContext context, String name, String expression)
         {
-            AliasExpression aliasExpression = Parse(expression);
+            IExpression aliasExpression = Parse(context.Bot.Command, expression);
             Remove(context.Bot.Command, context.Command.Plugin, name, aliasExpression.Arity);
             Add(context.Bot.Command, context.Command.Plugin, new UnparsedAlias(name, expression), aliasExpression, 
                 true);
@@ -78,16 +71,14 @@ namespace Veda.Plugins.Alias
             Remove(context.Bot.Command, context.Command.Plugin, name, arity);
         }
 
-        private AliasExpression Parse(String expression)
+        private IExpression Parse(ICommandManager commandManager, String expression)
         {
             // TODO: NOT reentrant (for performance).
-            _parser.Reset(new StringReader(expression));
-            _parser.Parse();
-            return _analyzer.Alias;
+            return commandManager.Parse(expression);
         }
 
         private void Add(ICommandManager commandManager, IPlugin plugin, UnparsedAlias unparsedAlias, 
-            AliasExpression alias, bool store)
+            IExpression alias, bool store)
         {
             ushort arity = alias.Arity;
             QualifiedNameTypes qualifiedName =

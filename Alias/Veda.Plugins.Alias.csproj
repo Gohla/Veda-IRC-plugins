@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="grammatica-1.5">
-      <HintPath>..\..\Veda-dev\grammatica\lib\grammatica-1.5.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Reactive.Core, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -52,16 +49,10 @@
   <ItemGroup>
     <Compile Include="AliasCommand.cs" />
     <Compile Include="AliasPlugin.cs" />
-    <Compile Include="Grammar\AliasGrammar\AliasGrammarAnalyzer.cs" />
-    <Compile Include="Grammar\AliasGrammar\AliasGrammarConstants.cs" />
-    <Compile Include="Grammar\AliasGrammar\AliasGrammarParser.cs" />
-    <Compile Include="Grammar\AliasGrammar\AliasGrammarTokenizer.cs" />
-    <Compile Include="ParseAnalyzer.cs" />
     <Compile Include="UnparsedAlias.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Grammar\AliasGrammar.grammar" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

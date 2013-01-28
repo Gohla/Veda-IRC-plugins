@@ -7,23 +7,23 @@ namespace Veda.Plugins.Alias
 {
     public class AliasCommand : AbstractCommand
     {
-        private AliasExpression _alias;
+        private IExpression _expression;
 
-        public AliasCommand(IPlugin plugin, String name, String description, bool @private, AliasExpression alias) :
+        public AliasCommand(IPlugin plugin, String name, String description, bool @private, IExpression expression) :
             base(plugin, name)
         {
             Description = description;
-            ParameterTypes = Enumerable.Repeat(typeof(String), alias.Arity).ToArray();
-            ParameterNames = Enumerable.Range(1, alias.Arity).Select(i => i.ToString()).ToArray();
+            ParameterTypes = Enumerable.Repeat(typeof(String), expression.Arity).ToArray();
+            ParameterNames = Enumerable.Range(1, expression.Arity).Select(i => i.ToString()).ToArray();
             DefaultPermissions = new PermissionAttribute[0];
             Private = @private;
 
-            _alias = alias;
+            _expression = expression;
         }
 
         public override object Call(IContext context, params object[] arguments)
         {
-            return _alias.Evaluate(context, arguments);
+            return _expression.Evaluate(context, arguments);
         }
     }
 }
