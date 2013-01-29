@@ -13,22 +13,22 @@ namespace Veda.Plugins.Alias
     {
         private readonly MultiValueDictionary<String, ushort> _unqualifiedAliases =
             new MultiValueDictionary<String, ushort>();
-        private readonly Dictionary<QualifiedNameTypes, UnparsedAlias> _aliases =
-            new Dictionary<QualifiedNameTypes, UnparsedAlias>();
+        private readonly Dictionary<QualifiedNameTypes, AliasData> _aliases =
+            new Dictionary<QualifiedNameTypes, AliasData>();
         private readonly Dictionary<QualifiedNameTypes, AliasCommand> _commands = 
             new Dictionary<QualifiedNameTypes, AliasCommand>();
 
-        public HashSet<UnparsedAlias> Aliases { get; set; }
+        public HashSet<AliasData> Aliases { get; set; }
 
         public AliasPlugin()
         {
-            Aliases = new HashSet<UnparsedAlias>();
+            Aliases = new HashSet<AliasData>();
         }
 
         [Loaded]
         public void Loaded(IPlugin plugin, IBot bot)
         {
-            foreach(UnparsedAlias alias in Aliases)
+            foreach(AliasData alias in Aliases)
             {
                 IExpression aliasExpression = Parse(bot.Command, alias.Expression);
                 Add(bot.Command, plugin, alias, aliasExpression, false);
@@ -39,7 +39,7 @@ namespace Veda.Plugins.Alias
         public void Add(IContext context, String name, String expression)
         {
             IExpression aliasExpression = Parse(context.Bot.Command, expression);
-            Add(context.Bot.Command, context.Command.Plugin, new UnparsedAlias(name, expression), aliasExpression, 
+            Add(context.Bot.Command, context.Command.Plugin, new AliasData(name, expression), aliasExpression, 
                 true);
         }
 
@@ -48,7 +48,7 @@ namespace Veda.Plugins.Alias
         {
             IExpression aliasExpression = Parse(context.Bot.Command, expression);
             Remove(context.Bot.Command, context.Command.Plugin, name, aliasExpression.Arity);
-            Add(context.Bot.Command, context.Command.Plugin, new UnparsedAlias(name, expression), aliasExpression, 
+            Add(context.Bot.Command, context.Command.Plugin, new AliasData(name, expression), aliasExpression, 
                 true);
         }
 
@@ -73,11 +73,10 @@ namespace Veda.Plugins.Alias
 
         private IExpression Parse(ICommandManager commandManager, String expression)
         {
-            // TODO: NOT reentrant (for performance).
             return commandManager.Parse(expression);
         }
 
-        private void Add(ICommandManager commandManager, IPlugin plugin, UnparsedAlias unparsedAlias, 
+        private void Add(ICommandManager commandManager, IPlugin plugin, AliasData unparsedAlias, 
             IExpression alias, bool store)
         {
             ushort arity = alias.Arity;
@@ -107,7 +106,7 @@ namespace Veda.Plugins.Alias
                 throw new InvalidOperationException("Alias with name " + name + " and arity " + arity
                     + " does not exist.");
 
-            UnparsedAlias alias = _aliases[qualifiedName];
+            AliasData alias = _aliases[qualifiedName];
             AliasCommand command = _commands[qualifiedName];
             commandManager.Remove(command);
 

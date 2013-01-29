@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Veda.Plugins.Alias
 {
-    public class UnparsedAlias
+    public class AliasData
     {
-        public String Name;
-        public String Expression;
+        public readonly String Name;
+        public readonly String Expression;
 
-        public UnparsedAlias(String name, String expression)
+        public AliasData(String name, String expression)
         {
             Name = name;
             Expression = expression;
@@ -19,10 +19,10 @@ namespace Veda.Plugins.Alias
         	if(ReferenceEquals(other, null))
         		return false;
         
-        	return Equals(other as UnparsedAlias);
+        	return Equals(other as AliasData);
         }
         
-        public bool Equals(UnparsedAlias other)
+        public bool Equals(AliasData other)
         {
         	if(ReferenceEquals(other, null))
         		return false;

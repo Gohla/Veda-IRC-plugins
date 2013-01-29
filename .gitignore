@@ -24,6 +24,8 @@
 /IRC/obj
 /List/bin
 /List/obj
+/MessageParser/bin
+/MessageParser/obj
 /Permission/bin
 /Permission/obj
 /Plugin/bin

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B608CBFB-25E1-4C8F-B2A9-6459247D24D7}</ProjectGuid>
+    <ProjectGuid>{9FC68513-6500-43E0-9A42-F5C3E4184125}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Veda.Plugins.Alias</RootNamespace>
-    <AssemblyName>Veda.Plugins.Alias</AssemblyName>
+    <RootNamespace>Veda.Plugins.MessageParser</RootNamespace>
+    <AssemblyName>Veda.Plugins.MessageParser</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Veda-dev\</SolutionDir>
@@ -37,8 +37,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Veda-dev\packages\Rx-Core.2.0.21114\lib\Net45\System.Reactive.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Interfaces, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="System.Reactive.Interfaces">
       <HintPath>..\..\Veda-dev\packages\Rx-Interfaces.2.0.21114\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Linq, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
@@ -47,13 +46,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AliasCommand.cs" />
-    <Compile Include="AliasPlugin.cs" />
-    <Compile Include="AliasData.cs" />
+    <Compile Include="MessageParserData.cs" />
+    <Compile Include="MessageParser.cs" />
+    <Compile Include="MessageParserPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Gohla.Shared\Gohla.Shared\Gohla.Shared.csproj">
@@ -64,14 +60,13 @@
       <Project>{C699BFFA-5FE2-441C-9679-59BEAD165BC6}</Project>
       <Name>ReactiveIRC.Interface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Veda\Command\Veda.Command.csproj">
-      <Project>{5c8bfb0b-a0cb-4b98-bc8e-e703d9e44f83}</Project>
-      <Name>Veda.Command</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Veda\Interface\Veda.Interface.csproj">
       <Project>{BFD3723B-68D5-4A3F-8223-58B9C6E72178}</Project>
       <Name>Veda.Interface</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
