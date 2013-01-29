@@ -24,6 +24,7 @@ namespace Veda.Plugins.MessageParser
                 return;
             String[] arguments = match.Groups
                 .As<System.Text.RegularExpressions.Group>()
+                .Skip(1)
                 .Select(g => g.Value)
                 .ToArray()
                 ;

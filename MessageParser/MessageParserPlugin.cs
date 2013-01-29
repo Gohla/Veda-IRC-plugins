@@ -33,6 +33,7 @@ namespace Veda.Plugins.MessageParser
             {
                 Regex regex = ParseRegex(data.Pattern);
                 IExpression expression = ParseExpression(bot.Command, data.Expression);
+                Add(data, regex, expression, false);
             }
 
             _messageDisposable = bot.Messages.Subscribe(ParseMessage);
