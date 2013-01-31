@@ -16,6 +16,8 @@
 /Alias/obj
 /Channel/bin
 /Channel/obj
+/Conditional/bin
+/Conditional/obj
 /Core/bin
 /Core/obj
 /Google/bin
@@ -26,11 +28,15 @@
 /IRC/obj
 /List/bin
 /List/obj
+/Math/bin
+/Math/obj
 /MessageParser/bin
 /MessageParser/obj
 /Permission/bin
 /Permission/obj
 /Plugin/bin
 /Plugin/obj
+/String/bin
+/String/obj
 /User/bin
 /User/obj
