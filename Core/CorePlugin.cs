@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ReactiveIRC.Interface;
 using Veda.Interface;
 
 namespace Veda.Plugins.Core
@@ -58,6 +59,20 @@ namespace Veda.Plugins.Core
             return candidates
                 .Select(c => c.ToString() + " -- " + c.Description)
                 ;
+        }
+
+        [Command(Description = "Returns more messages from the buffer of the previous command.")]
+        public static String More(IContext context)
+        {
+            context.ReplyForm = ReplyForm.More;
+            return context.Bot.More();
+        }
+
+        [Command(Description = "Returns more messages from the buffer of the previous command from given user.")]
+        public static String More(IContext context, IUser user)
+        {
+            context.ReplyForm = ReplyForm.More;
+            return context.Bot.More(user);
         }
 
         [Command(Description = "Echoes message to the channel the command was sent to, or to the user that sent the command.")]
